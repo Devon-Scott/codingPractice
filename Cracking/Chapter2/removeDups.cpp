@@ -1,5 +1,5 @@
 #include <iostream>
-#include <set>
+#include <vector>
 #include <string>
 
 template <typename T>
@@ -34,22 +34,28 @@ Node<T>* deleteNode(Node<T>* head){
 }
 
 template<typename T>
-Node<T>* deleteDuplicateNodes(Node<T>* head, T val){
-	Node<T>* n = head;
-	//std::cout << n->value << " compared to " << val << std::endl;
-	/*if (n->value == val){
-		//std::cout << "deleting " << n->value << std::endl;
-		Node<T>* temp = n;
-		n = n->next;
-		delete temp;
-		return n;
-	}*/
-	while (n->next != nullptr){
-		if (n->value == val){
-			n->next = deleteNode(n);
+void deleteDuplicateNodes2(Node<T>* head){
+	Node<T>* iterator = head;
+	T duplicateValue = head->value;
+	while (iterator->next != nullptr){
+		if (iterator->next->value == duplicateValue){
+			iterator->next = deleteNode(iterator->next);
 		}
-		if (n->next != nullptr){
-			n = n->next;
+		if (iterator != nullptr){
+			iterator = iterator->next;
+		}
+	}
+}
+
+template<typename T>
+Node<T>* deleteDuplicateNodes(Node<T>* head, T val){
+	Node<T>* iterator = head;
+	while (iterator->next != nullptr){
+		if (iterator->value == val){
+			iterator = deleteNode(iterator);
+		}
+		if (iterator->next != nullptr){
+			iterator = iterator->next;
 		}
 	}
 	return head;
@@ -61,13 +67,11 @@ void removeDups(Node<T>* head){
 	// Need to touch every item in the list, put it in a set, then check if every 
 	// future item is an element of that set
 	// This also requires o(n) extra space for the set
-	std::set<T> tempBuffer;
 	Node<T>* iterator = head;
-	Node<T>* nextIterator = head->next;
 	// What count as a duplicate? Two pointers to the same item,
 	// or two items that share equality?
 	// Assume two items that share equality, otherwise it would be described as circular
-	while (iterator->next != nullptr){	
+	while (iterator->next != nullptr){
 		iterator->next = deleteDuplicateNodes(iterator->next, iterator->value);
 		if (iterator->next != nullptr){
 			iterator = iterator->next;
@@ -75,17 +79,26 @@ void removeDups(Node<T>* head){
 	}
 }
 
-int main(){
-	std::string words[] = {"cat", "cat", "dog", "snake", "kitten", "cat", "bird", "mouse", "lizard", "fish", "rat", "cat", "dog", "cat", "kitten", "kitten"};
-	std::string test[] = {"word", "word"};
-	Node<std::string>* head = new Node<std::string>(words[0]);
-	Node<std::string>* iterator = head;
-	for (int i = 1; i < 16; i++){
-		iterator->next = new Node<std::string>(words[i]);
+template <typename T>
+Node<T>* assignDataToList(std::vector<T> data){
+	Node<T>* head = new Node<T>(data[0]);
+	Node<T>* iterator = head;
+	for (int i = 1; i < data.size(); i++){
+		iterator->next = new Node<T>(data[i]);
 		iterator = iterator->next;
 	}
+	return head;
+}
+
+int main(){
+	std::vector<std::string> words = {"cat", "cat", "dog", "snake", "kitten", "cat", "bird", "mouse", "lizard", "fish", "rat", "cat", "dog", "cat", "kitten", "kitten"};
+	std::vector<std::string> test = {"word", "word", "other"};
+	Node<std::string>* head = assignDataToList(test);
+	
 	printLinkedList(head);
-	removeDups(head);
+	// I'm cutting the list off at the point where I delete. I should be assigning 
+	// something like head = head->next->next
+	deleteDuplicateNodes2(head);
 	printLinkedList(head);
 }
 
