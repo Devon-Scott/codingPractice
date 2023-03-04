@@ -22,8 +22,9 @@ void printLinkedList(Node<T>* head){
 	std::cout << std::endl;
 }
 
-// Call DeleteNextNodes(head, val) which enters a loop 
-// If head->value = val, call DeleteNode(head, val)
+/*
+Time complexity: Constant
+*/
 template<typename T>
 Node<T>* deleteNode(Node<T>* head){
 	Node<T>* n = head;
@@ -33,13 +34,23 @@ Node<T>* deleteNode(Node<T>* head){
 	return n;
 }
 
+/*
+Time complexity: Linear
+Runs through a linked list and removes all the values
+equal to the head of the list
+*/
 template<typename T>
-void deleteDuplicateNodes2(Node<T>* head){
+void deleteDuplicateNodes(Node<T>* head){
 	Node<T>* iterator = head;
 	T duplicateValue = head->value;
 	while (iterator->next != nullptr){
 		if (iterator->next->value == duplicateValue){
 			iterator->next = deleteNode(iterator->next);
+			// Realized that I was returning a nullptr, then needed to break because
+			// that would mean we reached the end of the list
+			if (iterator->next == nullptr){
+				break;
+			}
 		}
 		if (iterator != nullptr){
 			iterator = iterator->next;
@@ -47,35 +58,24 @@ void deleteDuplicateNodes2(Node<T>* head){
 	}
 }
 
-template<typename T>
-Node<T>* deleteDuplicateNodes(Node<T>* head, T val){
-	Node<T>* iterator = head;
-	while (iterator->next != nullptr){
-		if (iterator->value == val){
-			iterator = deleteNode(iterator);
-		}
-		if (iterator->next != nullptr){
-			iterator = iterator->next;
-		}
-	}
-	return head;
-}
-
+/*
+Time Complexity:
+One iterator that runs through the length of the list: O(n)
+On every element, calls a function that itself has an iterator 
+that runs through the rest of the list: O(n)
+Linear function that calls a linear function on every element: O(n^2)
+Space Complexity:
+No extra data structures, just a couple extra pointers, so O(1)
+*/ 
 template <typename T>
 void removeDups(Node<T>* head){
-	// Brute force 0n^2
-	// Need to touch every item in the list, put it in a set, then check if every 
-	// future item is an element of that set
-	// This also requires o(n) extra space for the set
 	Node<T>* iterator = head;
 	// What count as a duplicate? Two pointers to the same item,
 	// or two items that share equality?
 	// Assume two items that share equality, otherwise it would be described as circular
-	while (iterator->next != nullptr){
-		iterator->next = deleteDuplicateNodes(iterator->next, iterator->value);
-		if (iterator->next != nullptr){
-			iterator = iterator->next;
-		}
+	while (iterator != nullptr){
+		deleteDuplicateNodes(iterator);
+		iterator = iterator->next;
 	}
 }
 
@@ -91,14 +91,14 @@ Node<T>* assignDataToList(std::vector<T> data){
 }
 
 int main(){
-	std::vector<std::string> words = {"cat", "cat", "dog", "snake", "kitten", "cat", "bird", "mouse", "lizard", "fish", "rat", "cat", "dog", "cat", "kitten", "kitten"};
+	std::vector<std::string> words = {"cat", "cat", "dog", "snake", "kitten", "cat", "bird", "mouse", "lizard", "fish", "rat", "cat", "dog", "cat", "kitten", "mouse", "kitten", "monkey", "monkey"};
 	std::vector<std::string> test = {"word", "word", "other"};
-	Node<std::string>* head = assignDataToList(test);
+	Node<std::string>* head = assignDataToList(words);
 	
 	printLinkedList(head);
 	// I'm cutting the list off at the point where I delete. I should be assigning 
 	// something like head = head->next->next
-	deleteDuplicateNodes2(head);
+	removeDups(head);
 	printLinkedList(head);
 }
 
