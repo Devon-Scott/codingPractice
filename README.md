@@ -1,5 +1,4 @@
 # codingPractice
-Cracking the Coding Interview, Codility Lessons, and Leetcode Practice
 
 I am using this repository to practice data structures and algorithms<br>
 through Cracking the Coding Interview, Codility Lessons, and Leetcode.<br>
