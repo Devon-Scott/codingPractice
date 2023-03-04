@@ -10,16 +10,38 @@ printLinkedList(Node<T>* head)
 */
 #include "linkedUtility.h"
 
+/* 
+ * Helper recursive function that uses a reference to index and returnValue
+ * Operates in 0(n) time and O(n) space due to being a recursive call
+ * Time complexity:
+ * The only loop is a recursive loop, and it touches every item at most twice:
+ * Once when traversing to the end of the list and adding calls to the stack
+ * Once again when it comes back, discarding calls from the stack and incrementing index
+ * So technically O(2n)
+ * I would like a way of returning the whole thing as soon as a value is found
+ * without needing to discard each call from the stack one by one 
+ */
 template <typename T>
-T findKthToLast(const int k, Node<T>* head, int& index){
-    if (head->next != nullptr){
-        return findKthToLast(k, head->next, index);
-    }
-    index++;
-    std::cout << index << " " << k << std::endl;
-    if (index == k){
-        return head->value;
-    }
+void findKthToLast(const int k, Node<T>* head, int& index, T& returnValue){
+	if (head->next == nullptr){
+		if (k == index){
+			returnValue = head->value;
+			index++;
+			return;
+		} else {
+			index++;
+			return;
+		}
+	}
+	findKthToLast(k, head->next, index, returnValue);
+	if (k == index){
+		returnValue = head->value;
+		index++;
+		return;
+	} else {
+		index++;
+		return;
+	}
 }
 
 template <typename T>
@@ -28,8 +50,10 @@ T findKthToLast(const int k, Node<T>* head){
         throw "can't return past the end";
     }
     Node<T>* iterator = head;
-    int index = 0;
-    return findKthToLast(k, iterator, index);
+    int index = 1;
+	T returnValue;
+    findKthToLast(k, iterator, index, returnValue);
+	return returnValue;
 }
 
 int main(){
@@ -37,5 +61,7 @@ int main(){
 	std::vector<std::string> test = {"word", "word", "other"};
 	Node<std::string>* head = assignDataToList(words);
 	
-    std::cout << findKthToLast(2, head) << std::endl;
+	for (int i = 1; i < words.size(); i++){
+		std::cout << findKthToLast(i, head) << std::endl;
+	}
 }
