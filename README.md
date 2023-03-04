@@ -1,5 +1,4 @@
 # codingPractice
-repository for coding practice 
 
 I am using this repository to practice data structures and algorithms<br>
 through Cracking the Coding Interview, Codility Lessons, and Leetcode.<br>
