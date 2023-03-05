@@ -16,11 +16,16 @@ void deleteMiddleNode(Node<T>* node){
 
 template <typename T>
 Node<T>* getRandomNode(Node<T>* head){
-    
+    Node<T>* iterator = head;
 }
 
 int main(){
     std::vector<std::string> words = {"cat", "cat", "dog", "snake", "kitten", "cat", "bird", "mouse", "lizard", "fish", "rat", "cat", "dog", "cat", "kitten", "mouse", "kitten", "monkey", "monkey"};
 	std::vector<std::string> test = {"word", "word", "other"};
 	Node<std::string>* head = assignDataToList(words);
+
+    printLinkedList(head);
+    Node<std::string>* node = getRandomNode(head);
+    deleteMiddleNode(node);
+    printLinkedList(head);
 }
