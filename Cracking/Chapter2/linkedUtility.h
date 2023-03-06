@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include <ctime>
 
 template <typename T>
 struct Node{
@@ -30,4 +32,21 @@ Node<T>* assignDataToList(std::vector<T> data){
 		iterator = iterator->next;
 	}
 	return head;
+}
+
+// Gives a 10% chance to return any node except the first
+// or last node in a linked list
+template <typename T>
+Node<T>* getRandomNode(Node<T>* head){
+    Node<T>* iterator = head->next;
+
+	while (true){
+		if (iterator->next == nullptr){
+			iterator = head->next;
+		} else if (rand() % 10 == 0){
+			return iterator;
+		} else {
+			iterator = iterator->next;
+		}
+	}
 }

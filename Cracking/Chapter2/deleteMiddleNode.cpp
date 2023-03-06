@@ -13,6 +13,7 @@ Result: nothing is returned, but the new linked list looks like a->b->d->e- >f
 
 // node must be dereferenced to access the actual variable of node, even
 // though node itself is a pointer
+// This is actually a better delete function than the one in removeDups
 template <typename T>
 void deleteMiddleNode(Node<T>* node){
 	Node<T>* temp = node;
