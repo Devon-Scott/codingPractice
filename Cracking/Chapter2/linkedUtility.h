@@ -50,3 +50,12 @@ Node<T>* getRandomNode(Node<T>* head){
 		}
 	}
 }
+
+template <typename T>
+void deleteList(Node<T>* head){
+	if (head->next != nullptr){
+		deleteList(head->next);
+	}
+	delete head;
+	head = nullptr;
+}
