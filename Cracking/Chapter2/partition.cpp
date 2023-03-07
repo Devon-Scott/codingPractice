@@ -95,8 +95,11 @@ int main(){
     partition(partitionVal, intHead);
     printLinkedList(intHead);
 
-    deleteList(head);
-    deleteList(intHead);
+    deleteListIterative(head);
+    deleteListRecursive(intHead);
+    if (head == nullptr){
+        std::cout << "deletion successful" << std::endl;
+    }
     printLinkedList(head);
-    //printLinkedList(intHead);
+    printLinkedList(intHead);
 }

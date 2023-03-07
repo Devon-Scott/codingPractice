@@ -51,10 +51,25 @@ Node<T>* getRandomNode(Node<T>* head){
 	}
 }
 
+/*
+Since the Partition exercise, I learned that passing a pointer by reference
+is how to best apply operations on the head of the actual list
+Otherwise a copy of the pointer remains in the calling function, and it's
+not properly set to nullptr
+*/ 
 template <typename T>
-void deleteList(Node<T>* head){
+void deleteListIterative(Node<T>* &head){
+	while (head != nullptr){
+		Node<T>* temp = head;
+		head = head->next;
+		delete temp;
+	}
+}
+
+template <typename T>
+void deleteListRecursive(Node<T>* &head){
 	if (head->next != nullptr){
-		deleteList(head->next);
+		deleteListRecursive(head->next);
 	}
 	delete head;
 	head = nullptr;
