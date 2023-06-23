@@ -14,74 +14,32 @@ Output: 9 - > 1 -> 2. That is, 912.
 
 #include "linkedUtility.h"
 
+// Takes a linked list where the inputs are stored in reverse order
+// eg. 617 is stored as 7 -> 1 -> 6
+Node<int>* sumListsReverse(Node<int>* firstSummand, Node<int>* second){
+	// Need to delve to the end of the list, possibly through recursion,
+	// to get the value of the ones place
+	// Then add them together
+	// But what if the integers are of different lengths?
+	Node<int>* result;
+	Node<int>* resultIter = result;
+		
+	bool carry = false;
+	bool first = true;
+	Node<int>* firstIter = firstSummand;
+	Node<int>* secondIter = second;
 
-int getValueForSum(Node<int>* node){
-    if(node != nullptr){
-        return node->value;
-    } else {
-        return 0;
-    }
-}
-
-Node<int>* sumListsReverse(Node<int>* firstSummand, Node<int>* secondSummand){
-    Node<int>* sum = nullptr;
-    Node<int>* sumIter = sum;
-    Node<int>* firstIter = firstSummand; 
-    Node<int>* secondIter = secondSummand; 
-
-    int firstVal, secondVal, iterSum, nodeValue;
-    bool carryOne = false;
-
-    // Must return true if at least one is not nullptr
-    // means that inner brackets must return false if at least one is not nullptr
-    // means that must return true if both are nullptr
-    while (!(firstIter == nullptr && secondIter == nullptr)){
-        firstVal = getValueForSum(firstIter);
-        if (firstIter != nullptr){
-            firstIter = firstIter->next;
-        }
-        secondVal = getValueForSum(secondIter);
-        if (secondIter != nullptr){
-            secondIter = secondIter->next;
-        }
-        iterSum = firstVal + secondVal + carryOne;
-
-        if (iterSum >= 10){
-            carryOne = true;
-            nodeValue = iterSum % 10;
-        } else {
-            carryOne = false;
-            nodeValue = iterSum;
-        }
-
-        if (sum == nullptr){
-            sum = new Node<int>(nodeValue);
-            sumIter = sum;
-        } else {
-            sumIter->next = new Node<int>(nodeValue);
-            sumIter = sumIter->next;
-        }
-    }
-
-    if (carryOne){
-        nodeValue = carryOne;
-        sumIter->next = new Node<int>(nodeValue);
-        sumIter = sumIter->next;
-    }
-    return sum;
-}
-
-int main(){
-    std::vector<int> first = {7, 1, 6, 3};
-    std::vector<int> second = {5, 9, 7};
-    std::vector<int> third = {9, 9, 9, 9, 9, 9, 9};
-    Node<int>* firstSummand = assignDataToList(first);
-    Node<int>* secondSummand = assignDataToList(second);
-    Node<int>* thirdSummand = assignDataToList(third);
-    Node<int>* sum = sumListsReverse(firstSummand, secondSummand);
-    printLinkedList(sum);
-
-    Node<int>* secondSum = sumListsReverse(sum, thirdSummand);
-    printLinkedList(secondSum);
-
+	while (firstIter != nullptr && secondIter != nullptr){
+		if (!first){
+			resultIter->next = new Node<int>;
+			resultIter = resultIter->next;
+		}
+		carry = false;
+		int value = firstIter->value + secondIter->value;
+		if (value >= 10){
+			value -= 10;
+			carry = true;
+		}
+		resultIter->value = value;
+	}	
 }
