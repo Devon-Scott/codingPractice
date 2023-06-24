@@ -31,7 +31,7 @@ Node<int>* sumListsReverse(Node<int>* firstSummand, Node<int>* second){
 
 	while (firstIter != nullptr && secondIter != nullptr){
 		if (!first){
-			resultIter->next = new Node<int>;
+			resultIter->next = new Node<int>(0);
 			resultIter = resultIter->next;
 		}
 		carry = false;
