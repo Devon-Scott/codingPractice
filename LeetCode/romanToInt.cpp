@@ -21,8 +21,7 @@ int romanToInt(string s){
     int result = 0;
     for (int i = 0; i < length; i++){
         char temp = s[i];
-        std::cout << temp << std::endl;
-        int value;
+        int value = 0;
         if (temp == 'I' && i + 1 < length){
             if (s[i + 1] == 'V'){
                 value = 4;
@@ -50,11 +49,11 @@ int romanToInt(string s){
                 value = 900;
                 i++;
             }
-        } else {
+        }
+        if (value == 0){
             value = parseChar(temp);
         }
         result += value;
-        std::cout << result << std::endl;
     }
     return result;
 }
